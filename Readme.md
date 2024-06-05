@@ -24,4 +24,8 @@ dotnet run --launch-profile https --environment Production
 
 ### Swagger or API's
 
-Navigate to [swagger](https://localhost:7027/swagger) to access the API's.
+Navigate to [swagger](https://localhost:7027/swagger) to access the API's. Use correct port if different.
+
+### Reference
+
+Read [MS EF Core](https://learn.microsoft.com/en-us/ef/core/) for more.
