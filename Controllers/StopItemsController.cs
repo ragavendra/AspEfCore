@@ -8,9 +8,9 @@ namespace TodoApi.Controllers
     [ApiController]
     public class StopItemsController : ControllerBase
     {
-        private readonly StopContext _context;
+        private readonly AppDbContext _context;
 
-        public StopItemsController(StopContext context)
+        public StopItemsController(AppDbContext context)
         {
             _context = context;
         }
