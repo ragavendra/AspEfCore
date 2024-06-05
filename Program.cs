@@ -4,31 +4,27 @@ using TodoApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// var startup = new Startup(builder.Configuration);
-// startup.ConfigureServices(builder.Services);
-
 builder.Services.AddControllers();
 
-/*
-    services.AddDbContext<TodoContext>(opt =>
-        {
-          opt.UseInMemoryDatabase("TodoList");
-        });*/
+var serverVersion = new MySqlServerVersion(new Version(8, 0, 36));
 
 builder.Services.AddDbContext<AppDbContext>(opt =>
     {
         // opt.UseInMemoryDatabase("StopList");
         // opt.UseSqlite(Configuration["ConnectionStrings:WebApiDatabase"]);
-        opt.UseSqlite(builder.Configuration.GetConnectionString("WebApiDatabase"));
-        // opt.UseSqlite("Data Source=databse.dat");
-        // opt.UseSqlite(builder.Configuration)
+        _ = builder.Environment.IsDevelopment() ? opt.UseSqlite(builder.Configuration.GetConnectionString("WebApiDatabase"))
+        : opt.UseMySql(builder.Configuration.GetConnectionString("WebApiDatabase"), serverVersion)
+                // The following three options help with debugging, but should
+                // be changed or removed for production.
+                .LogTo(Console.WriteLine, LogLevel.Information)
+                .EnableSensitiveDataLogging()
+                .EnableDetailedErrors();
     });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// startup.Configure(app, app.Environment);
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
